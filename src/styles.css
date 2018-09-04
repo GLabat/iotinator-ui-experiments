@@ -1,0 +1,15 @@
+span.icon i {
+  padding-right: 0.2em;
+}
+
+span.card-header-title {
+  margin: 0 0.2em;
+}
+
+.card-header-title p.buttons {
+  margin-left: 3em;
+}
+
+.module {
+  margin: 1.5em 0;
+}
