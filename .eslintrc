@@ -1,0 +1,36 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  // https://prettier.io/docs/en/eslint.html#why-not-both
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:jest/recommended" // jest plugin to have lint rules for tests too
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "plugins": ["react", "prettier", "jest"],
+  "rules": {
+    "prettier/prettier": "error",
+    "eqeqeq": "error",
+    "linebreak-style": ["error", "unix"],
+    "no-fallthrough": ["error", { "commentPattern": "break[\\s\\w]*omitted" }]
+  },
+  "settings": {
+    "react": {
+      "version": "16.4"
+    }
+  }
+}

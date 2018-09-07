@@ -1,0 +1,38 @@
+{
+  // See https://blog.craftlab.hu/how-to-do-proper-tree-shaking-in-webpack-2-e27852af8b21
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        //"debug": true,
+        "modules": false, // For Tree shaking, reduce bundle size
+        //"modules": "commonjs", // For Tree shaking, reduce bundle size
+        "loose": true,
+        "useBuiltIns": "usage"
+      }
+    ],
+    "@babel/preset-react"
+  ],
+
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    "@babel/plugin-syntax-dynamic-import"
+  ],
+  "env": {
+    "test": {
+      // Set targets to be node for test (Jest runs in Node).
+      // This implicitly converts module to "commonjs" mode.
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "node": "current"
+            }
+          }
+        ]
+      ]
+    }
+  }
+}
