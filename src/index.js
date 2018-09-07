@@ -7,11 +7,7 @@ import Module from './data/Module.js'
 import ModuleList from './data/ModuleList.js'
 import ModuleListView from './Components/ModuleList.jsx'
 
-import 'bulma/css/bulma.css'
-
 import SAMPLE_DATA from './sample.js'
-
-import SC from './Components/Customs/SwitchUIClass.jsx'
 
 const store = new ModuleList()
 Object.entries(SAMPLE_DATA).forEach(([k, v]) =>
@@ -35,6 +31,8 @@ const App = observer(() => (
             MAC: `aa:82:96:eb:f3:8${idx}`,
             name: `Switch_${idx}`,
             ip: `192.168.4.${idx}`,
+            uiClassName: 'switchUIClass',
+            customData: '{"status": "on"}',
             pong: Math.floor(Math.random() * Math.floor(2))
           })
         )
@@ -49,4 +47,4 @@ const App = observer(() => (
   </React.Fragment>
 ))
 
-render(<App />, document.getElementById('root'))
+render(<App />, document.getElementById('app'))

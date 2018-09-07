@@ -11,6 +11,41 @@ import Loading from './Loading.jsx'
 
 import '../styles.css'
 
+// Enforce structure and behaviour of custom component
+function makeCustomComponent(WrappedComponent, componentName, customData) {
+  const _CustomComponent = class extends React.Component {
+    static propTypes = {
+      customData: PropTypes.object
+    }
+
+    static defaultProps = {
+      customData: {}
+    }
+
+    static displayName = 'CustomComponent'
+
+    render() {
+      return (
+        <React.Fragment>
+          <h5 className="has-background-grey has-text-white">
+            Custom component data
+          </h5>
+          <pre>{JSON.stringify(customData, null, 2)}</pre>
+          <h5 className="has-background-grey has-text-white">
+            Custom component &apos;
+            {componentName}
+            &apos;
+          </h5>
+          {/* Use React Context to pass the data and allow the Custom component to modify it? */}
+          <WrappedComponent {...this.props} />
+        </React.Fragment>
+      )
+    }
+  }
+  // Check if observer is needed when trying React Context
+  return observer(_CustomComponent)
+}
+
 const ModuleView = observer(({ module, useArticle }) => {
   const {
     name,
@@ -23,6 +58,7 @@ const ModuleView = observer(({ module, useArticle }) => {
     uiClassName,
     customData
   } = module
+
   const ActionBar = ({ className }) => (
     <p className={`buttons ${className}`}>
       <button
@@ -48,12 +84,20 @@ const ModuleView = observer(({ module, useArticle }) => {
       </button>
     </p>
   )
+
+  ActionBar.propTypes = {
+    className: PropTypes.string
+  }
+
   if (useArticle) {
     return (
       <article className="media">
         <figure className="media-left">
           <p className="image is-64x64">
-            <img src="https://bulma.io/images/placeholders/128x128.png" />
+            <img
+              src="https://bulma.io/images/placeholders/128x128.png"
+              alt=""
+            />
           </p>
         </figure>
         <div className="media-content">
@@ -85,35 +129,9 @@ const ModuleView = observer(({ module, useArticle }) => {
     )
   }
 
-  // Enforce structure and behaviour of custom component
-  function makeCustom(WrappedComponent) {
-    const _CustomComponent = class extends React.Component {
-      static propTypes = {
-        customData: PropTypes.object
-      }
-      render() {
-        return (
-          <React.Fragment>
-            <h5 className="has-background-grey has-text-white">
-              Custom component data
-            </h5>
-            <pre>{JSON.stringify(customData, null, 2)}</pre>
-            <h5 className="has-background-grey has-text-white">
-              Custom component '{uiClassName}'
-            </h5>
-            {/* Use React Context to pass the data and allow the Custom component to modify it? */}
-            <WrappedComponent {...this.props} />
-          </React.Fragment>
-        )
-      }
-    }
-    // Check if observer is needed when trying React Context
-    return observer(_CustomComponent)
-  }
-
   let CustomComponent = null
   if (uiClassName) {
-    CustomComponent = makeCustom(
+    CustomComponent = makeCustomComponent(
       Loadable({
         // Replace loader below to simulate long loading time
         /*
@@ -123,10 +141,13 @@ const ModuleView = observer(({ module, useArticle }) => {
           }, 2000)
         }),
       */
-        loader: () => import(`./${uiClassName}`),
+        loader: () =>
+          import(/* webpackChunkName: "customComponents" */ `./${uiClassName}`),
         loading: Loading,
         timeout: 5000
-      })
+      }),
+      uiClassName,
+      customData
     )
   }
 
@@ -134,30 +155,7 @@ const ModuleView = observer(({ module, useArticle }) => {
     <div className="card module">
       <header className="card-header">
         <span className="card-header-title">
-          {name} ({id})
-          <p className="buttons">
-            <button
-              className={`button is-white`}
-              onClick={action(e => {
-                e.preventDefault(e)
-                module.toggle()
-              })}
-            >
-              <span className="icon">
-                <i className={`fa fa-toggle-${(disabled && 'off') || 'on'}`} />
-              </span>
-            </button>
-            <button
-              className="button is-white"
-              onClick={action(e => {
-                e.preventDefault(e)
-                const newName = prompt('Enter new name', module.name)
-                module.rename(newName)
-              })}
-            >
-              <i className="fa fa-edit" aria-hidden="true" />
-            </button>
-          </p>
+          {name} ({id})<ActionBar />
         </span>
       </header>
       <div className="card-content">
