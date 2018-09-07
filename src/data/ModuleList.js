@@ -1,7 +1,8 @@
 import { observable, action, computed } from 'mobx'
 
 class ModuleList {
-  @observable modules = []
+  @observable
+  modules = []
   @computed
   get enabledModulesCount() {
     return this.modules.filter(s => s.pong).length

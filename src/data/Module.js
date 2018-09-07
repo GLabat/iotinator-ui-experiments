@@ -15,9 +15,12 @@ class Module {
     return this.pong === 0
   }
 
-  @observable MAC = '' // Mac address of the module transformed to be used as id
-  @observable name = '' // Name of the module  (can change)
-  @observable pong = 0 // 0, 1 or -1: not pinged, ping ok, ping nok
+  @observable
+  MAC = '' // Mac address of the module transformed to be used as id
+  @observable
+  name = '' // Name of the module  (can change)
+  @observable
+  pong = 0 // 0, 1 or -1: not pinged, ping ok, ping nok
 
   type = '' // type of the module  (cannot change)
   ssid = '' // Name of the created wifi network
@@ -49,7 +52,7 @@ class Module {
     this.ssid = ssid
     this.ip = ip
     this.uiClassName = buildCustomModulePath(uiClassName) // ##
-    // Make custom data observable but not that new properties would not be observed
+    // Make custom data observable but note that new properties would not be observed
     try {
       this.customData = observable(JSON.parse(customData))
     } catch (e) {

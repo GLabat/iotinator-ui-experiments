@@ -1,5 +1,8 @@
 import React from 'react'
 
 // Simple component
-
-export default ({ customData }) => <p>Some text acting as Custom component</p>
+const SimpleComponent = (/*{ customData }*/) => (
+  <p>Some text acting as Custom component</p>
+)
+SimpleComponent.displayName = 'SimpleComponent'
+export default SimpleComponent
