@@ -10,6 +10,7 @@
     "url": "https://github.com/Glabat/iotinator-ui-experiments.git"
   },
   "scripts": {
+    "analyze": "webpack --mode production --analyze",
     "build": "webpack --mode production",
     "devserver": "webpack-dev-server --mode development",
     "test": "jest",

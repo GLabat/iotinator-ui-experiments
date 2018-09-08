@@ -9,6 +9,9 @@ const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin
+
 module.exports = (env, options) => {
   const devMode = options.mode === 'development'
   const sourcemap = devMode ? 'cheap-module-source-map' : undefined
@@ -25,6 +28,15 @@ module.exports = (env, options) => {
         verbose: true // Set it to true to see if cdn is used
       })
     )
+
+    if (options.analyze) {
+      optionalPlugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerHost: '0.0.0.0',
+          analyzerPort: 8888
+        })
+      )
+    }
   }
 
   return {
