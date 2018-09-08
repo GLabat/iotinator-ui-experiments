@@ -25,7 +25,7 @@ module.exports = (env, options) => {
     optionalPlugins.push(
       new DynamicCdnWebpackPlugin({
         only: ['react', 'react-dom', 'mobx'], // ## 'mobx-react' is not available yet… See https://github.com/mastilver/module-to-cdn/blob/master/modules.json
-        verbose: true // Set it to true to see if cdn is used
+        verbose: false // Debug: set it to true to see if cdn is used
       })
     )
 
@@ -54,7 +54,18 @@ module.exports = (env, options) => {
           sourceMap: sourcemap !== undefined
         }),
         new OptimizeCSSAssetsPlugin({})
-      ]
+      ],
+      splitChunks: {
+        cacheGroups: {
+          default: false,
+          commons: {
+            test: /node_modules/,
+            name: 'vendor',
+            chunks: 'all'
+          }
+        }
+      },
+      runtimeChunk: false
     },
     resolve: {
       // Avoid the need to specify extension when importing local modules
