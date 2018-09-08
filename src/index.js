@@ -48,3 +48,8 @@ const App = observer(() => (
 ))
 
 render(<App />, document.getElementById('app'))
+if (process.env.NODE_ENV === 'development') {
+  // DEBUG: expose the store (module list in window to test outside of the UI)
+  // Ex: window.store.modules[0].customData.speed = "5"
+  window.store = store
+}
