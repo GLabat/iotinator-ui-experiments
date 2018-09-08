@@ -15,7 +15,18 @@ module.exports = (env, options) => {
   const optionalPlugins = []
   if (devMode) {
     optionalPlugins.push(new webpack.HotModuleReplacementPlugin())
+  } else {
+    // Only in production. For dev, do not use CDN to be able to code without network.
+    // Make sure that the following packages are downloaded from CDN (not part of the core bundle)
+    // optionalPlugins.push(
+    optionalPlugins.push(
+      new DynamicCdnWebpackPlugin({
+        only: ['react', 'react-dom', 'mobx'], // ## 'mobx-react' is not available yet… See https://github.com/mastilver/module-to-cdn/blob/master/modules.json
+        verbose: true // Set it to true to see if cdn is used
+      })
+    )
   }
+
   return {
     entry: { main: './src/index.js' },
     devtool: sourcemap,
@@ -83,7 +94,6 @@ module.exports = (env, options) => {
       ]
     },
     plugins: [
-      ...optionalPlugins,
       // Clean output directory
       new CleanWebpackPlugin('dist', {}),
       // Minimize CSS
@@ -99,11 +109,9 @@ module.exports = (env, options) => {
         template: './src/index.template.html',
         filename: 'index.html'
       }),
+      // ??
       new WebpackMd5Hash(),
-      // Make sure that the following packages are downloaded from CDN (not part of the core bundle)
-      new DynamicCdnWebpackPlugin({
-        only: ['react', 'react-dom', 'mobx', 'mobx-react']
-      })
+      ...optionalPlugins
     ]
   }
 }
