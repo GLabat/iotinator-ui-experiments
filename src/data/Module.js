@@ -1,4 +1,6 @@
-import { observable, action, computed } from 'mobx'
+import { action, computed, observable, observe } from 'mobx'
+
+import XIOT_API from './api'
 
 class Module {
   @computed
@@ -60,10 +62,21 @@ class Module {
     } catch (e) {
       this.customData = {}
     }
+
+    // Whenever customData is modified, automatically send it to the server, with a small debounce
+    observe(this.customData, change => {
+      // Only listen to update
+      if (change.type === 'update') {
+        // TODO: handle failure
+        XIOT_API.updateData(this.id, this.customData)
+      }
+    })
   }
 
   @action
   rename = newName => {
+    // TODO: handle failure
+    XIOT_API.rename(this.id, newName, this.name)
     this.name = newName
   }
 
