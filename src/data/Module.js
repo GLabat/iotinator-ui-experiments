@@ -1,9 +1,5 @@
 import { observable, action, computed } from 'mobx'
 
-function buildCustomModulePath(name = '') {
-  return `Customs/${name.charAt(0).toUpperCase() + name.slice(1)}.jsx`
-}
-
 class Module {
   @computed
   get id() {
@@ -13,6 +9,12 @@ class Module {
   @computed
   get disabled() {
     return this.pong === 0
+  }
+
+  @computed
+  get uiClassPath() {
+    return `./Customs/${this.uiClassName.charAt(0).toUpperCase() +
+      this.uiClassName.slice(1)}.jsx`
   }
 
   @observable
@@ -39,7 +41,7 @@ class Module {
     type,
     ssid,
     ip,
-    uiClassName,
+    uiClassName = '',
     customData = {}
   }) {
     if (!MAC) {
@@ -51,7 +53,7 @@ class Module {
     this.type = type
     this.ssid = ssid
     this.ip = ip
-    this.uiClassName = buildCustomModulePath(uiClassName) // ##
+    this.uiClassName = uiClassName
     // Make custom data observable but note that new properties would not be observed
     try {
       this.customData = observable(JSON.parse(customData))

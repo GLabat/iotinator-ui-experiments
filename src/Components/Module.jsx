@@ -22,7 +22,7 @@ function makeCustomComponent(WrappedComponent, componentName, customData) {
       customData: {}
     }
 
-    static displayName = 'CustomComponent'
+    static displayName = `${componentName}_CustomComponent`
 
     render() {
       return (
@@ -56,6 +56,7 @@ const ModuleView = observer(({ module, useArticle }) => {
     type,
     disabled,
     uiClassName,
+    uiClassPath,
     customData
   } = module
 
@@ -142,7 +143,7 @@ const ModuleView = observer(({ module, useArticle }) => {
         }),
       */
         loader: () =>
-          import(/* webpackChunkName: "customComponents" */ `./${uiClassName}`),
+          import(/* webpackChunkName: "[request]" */ `${uiClassPath}`),
         loading: Loading,
         timeout: 5000
       }),
