@@ -69,7 +69,12 @@ module.exports = (env, options) => {
     },
     resolve: {
       // Avoid the need to specify extension when importing local modules
-      extensions: ['.js', '.jsx', '.json']
+      extensions: ['.js', '.jsx', '.json'],
+      // Simplify module imports
+      alias: {
+        data: path.resolve(__dirname, 'src/data/'),
+        ui: path.resolve(__dirname, 'src/Components/')
+      }
     },
     devServer: {
       // Enable hot module reload. Without, dynamic loaded modules are not refreshed
