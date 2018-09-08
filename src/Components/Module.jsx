@@ -15,7 +15,8 @@ import '../styles.css'
 function makeCustomComponent(WrappedComponent, componentName, customData) {
   const _CustomComponent = class extends React.Component {
     static propTypes = {
-      customData: PropTypes.object
+      customData: PropTypes.object,
+      module: PropTypes.instanceOf(Module)
     }
 
     static defaultProps = {
@@ -165,7 +166,9 @@ const ModuleView = observer(({ module, useArticle }) => {
           <p>MAC: {MAC}</p>
           <p>IP: {ip}</p>
           <p>SSID: {ssid}</p>
-          {uiClassName && <CustomComponent customData={customData} />}
+          {uiClassName && (
+            <CustomComponent module={module} customData={customData} />
+          )}
         </div>
       </div>
       <div
