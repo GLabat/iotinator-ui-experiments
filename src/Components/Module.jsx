@@ -58,6 +58,7 @@ const ModuleView = observer(({ module, useArticle }) => {
     disabled,
     uiClassName,
     uiClassPath,
+    beingEdited,
     customData
   } = module
 
@@ -76,11 +77,14 @@ const ModuleView = observer(({ module, useArticle }) => {
       </button>
       <button
         className="button is-white"
-        onClick={action(e => {
+        onClick={e => {
           e.preventDefault(e)
           const newName = prompt('Enter new name', module.name)
-          module.rename(newName)
-        })}
+          // Cancelling the prompt set the returned value to null…
+          if (newName !== null && newName !== '') {
+            module.rename(newName)
+          }
+        }}
       >
         <i className="fa fa-edit" aria-hidden="true" />
       </button>
@@ -157,7 +161,13 @@ const ModuleView = observer(({ module, useArticle }) => {
     <div className="card module">
       <header className="card-header">
         <span className="card-header-title">
-          {name} ({id})<ActionBar />
+          {name} ({id}) {!beingEdited && <ActionBar />}
+          {beingEdited && (
+            <span>
+              <i className="fas fa-spinner fa-spin" />
+              Update in progress…
+            </span>
+          )}
         </span>
       </header>
       <div className="card-content">
