@@ -16,15 +16,29 @@ function updateData(moduleId, customData) {
   //   mode: 'cors'
   // })
 
-  // eslint-disable-next-line
-  console.log(
-    `Update custom data of '${moduleId}' with '${JSON.stringify(customData)}'`
-  )
+  return new Promise((resolve /*, reject*/) => {
+    // Simulate long-running renaming
+    setTimeout(() => {
+      // eslint-disable-next-line
+      console.log(
+        `Update custom data of '${moduleId}' with '${JSON.stringify(
+          customData
+        )}'`
+      )
+      resolve()
+    }, 2000)
+  })
 }
 
 function rename(moduleId, newName, oldName) {
-  // eslint-disable-next-line
-  console.log(`Renaming '${moduleId}' from '${oldName}' to '${newName}'`)
+  return new Promise((resolve /*, reject*/) => {
+    // Simulate long-running renaming
+    setTimeout(() => {
+      // eslint-disable-next-line
+      console.log(`Renaming '${moduleId}' from '${oldName}' to '${newName}'`)
+      resolve()
+    }, 2000)
+  })
 }
 
 export default {

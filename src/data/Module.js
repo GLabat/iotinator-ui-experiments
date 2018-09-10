@@ -20,6 +20,9 @@ class Module {
   }
 
   @observable
+  beingEdited = false
+
+  @observable
   MAC = '' // Mac address of the module transformed to be used as id
   @observable
   name = '' // Name of the module  (can change)
@@ -47,7 +50,7 @@ class Module {
     customData = {}
   }) {
     if (!MAC) {
-      throw new Error('NoMac')
+      throw new Error('ErrNoMac')
     }
     this.MAC = MAC
     this.name = name
@@ -63,21 +66,39 @@ class Module {
       this.customData = {}
     }
 
-    // Whenever customData is modified, automatically send it to the server, with a small debounce
+    // Whenever customData is modified, automatically send it to the server.
+    // But this means that if an error occurs during the call, there will be a de-synchro (client updated, but no server).
+    // TODO: change that, maybe with a specific action called from the CustomComponent.
     observe(this.customData, change => {
       // Only listen to update
       if (change.type === 'update') {
+        this.beingEdited = true
         // TODO: handle failure
         XIOT_API.updateData(this.id, this.customData)
+          .then(() => {
+            this.beingEdited = false
+          })
+          .catch(() => {
+            this.beingEdited = false
+            throw new Error('ErrUpdateData')
+          })
       }
     })
   }
 
   @action
   rename = newName => {
-    // TODO: handle failure
+    this.beingEdited = true
     XIOT_API.rename(this.id, newName, this.name)
-    this.name = newName
+      .then(() => {
+        this.beingEdited = false
+        // Update the name locally (client-side) only if server call is successful
+        this.name = newName
+      })
+      .catch(() => {
+        this.beingEdited = false
+        throw new Error('ErrRename')
+      })
   }
 
   @action
