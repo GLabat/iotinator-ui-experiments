@@ -12,18 +12,10 @@ import Loading from './Loading.jsx'
 import '../styles.css'
 
 // Enforce structure and behaviour of custom component
-function makeCustomComponent(WrappedComponent, componentName, customData) {
+function makeCustomComponent(WrappedComponent, module) {
+  const { uiClassName, customData, updateCustomData } = module
   const _CustomComponent = class extends React.Component {
-    static propTypes = {
-      customData: PropTypes.object,
-      module: PropTypes.instanceOf(Module)
-    }
-
-    static defaultProps = {
-      customData: {}
-    }
-
-    static displayName = `${componentName}_CustomComponent`
+    static displayName = `${uiClassName}_CustomComponent`
 
     render() {
       return (
@@ -34,11 +26,14 @@ function makeCustomComponent(WrappedComponent, componentName, customData) {
           <pre>{JSON.stringify(customData, null, 2)}</pre>
           <h5 className="has-background-grey has-text-white">
             Custom component &apos;
-            {componentName}
+            {uiClassName}
             &apos;
           </h5>
-          {/* Use React Context to pass the data and allow the Custom component to modify it? */}
-          <WrappedComponent {...this.props} />
+          {/* Forward custom data as props to the custom component */}
+          <WrappedComponent
+            updateCustomData={updateCustomData}
+            {...customData}
+          />
         </React.Fragment>
       )
     }
@@ -58,8 +53,7 @@ const ModuleView = observer(({ module, useArticle }) => {
     disabled,
     uiClassName,
     uiClassPath,
-    beingEdited,
-    customData
+    beingEdited
   } = module
 
   const ActionBar = ({ className }) => (
@@ -146,14 +140,14 @@ const ModuleView = observer(({ module, useArticle }) => {
             resolve(import(`./${uiClassName}`))
           }, 2000)
         }),
-      */
+        */
+        // Use 'webpackChunkName: "[request]"' to name the bundle with the name of the module
         loader: () =>
           import(/* webpackChunkName: "[request]" */ `${uiClassPath}`),
         loading: Loading,
         timeout: 5000
       }),
-      uiClassName,
-      customData
+      module
     )
   }
 
@@ -176,9 +170,7 @@ const ModuleView = observer(({ module, useArticle }) => {
           <p>MAC: {MAC}</p>
           <p>IP: {ip}</p>
           <p>SSID: {ssid}</p>
-          {uiClassName && (
-            <CustomComponent module={module} customData={customData} />
-          )}
+          {uiClassName && <CustomComponent />}
         </div>
       </div>
       <div

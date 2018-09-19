@@ -1,4 +1,4 @@
-import { action, computed, observable, observe } from 'mobx'
+import { action, computed, set, observable } from 'mobx'
 
 import XIOT_API from './api'
 
@@ -65,25 +65,21 @@ class Module {
     } catch (e) {
       this.customData = {}
     }
+  }
 
-    // Whenever customData is modified, automatically send it to the server.
-    // But this means that if an error occurs during the call, there will be a de-synchro (client updated, but no server).
-    // TODO: change that, maybe with a specific action called from the CustomComponent.
-    observe(this.customData, change => {
-      // Only listen to update
-      if (change.type === 'update') {
-        this.beingEdited = true
-        // TODO: handle failure
-        XIOT_API.updateData(this.id, this.customData)
-          .then(() => {
-            this.beingEdited = false
-          })
-          .catch(() => {
-            this.beingEdited = false
-            throw new Error('ErrUpdateData')
-          })
-      }
-    })
+  @action
+  updateCustomData = data => {
+    this.beingEdited = true
+    // TODO: handle failure
+    XIOT_API.updateData(this.id, data)
+      .then(() => {
+        this.beingEdited = false
+        set(this.customData, data)
+      })
+      .catch(e => {
+        this.beingEdited = false
+        throw e
+      })
   }
 
   @action
@@ -95,9 +91,9 @@ class Module {
         // Update the name locally (client-side) only if server call is successful
         this.name = newName
       })
-      .catch(() => {
+      .catch(e => {
         this.beingEdited = false
-        throw new Error('ErrRename')
+        throw e
       })
   }
 

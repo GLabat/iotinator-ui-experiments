@@ -6,7 +6,7 @@ export default {
     pong: true,
     uiClassName: 'fanUIClass',
     heap: 38792,
-    customData: '{"speed": "2", "osc": "on"}'
+    customData: '{"speed": 2, "osc": true}'
   },
   '84:f3:eb: 96: 82:aa': {
     name: 'Switch_1',
