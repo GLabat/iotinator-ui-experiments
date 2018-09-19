@@ -12,6 +12,8 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin
 
+const AssetsPlugin = require('assets-webpack-plugin')
+
 module.exports = (env, options) => {
   const devMode = options.mode === 'development'
   const sourcemap = devMode ? 'cheap-module-source-map' : undefined
@@ -26,7 +28,8 @@ module.exports = (env, options) => {
       new DynamicCdnWebpackPlugin({
         only: ['react', 'react-dom', 'mobx'], // ## 'mobx-react' is not available yet… See https://github.com/mastilver/module-to-cdn/blob/master/modules.json
         verbose: false // Debug: set it to true to see if cdn is used
-      })
+      }),
+      new AssetsPlugin()
     )
 
     if (options.analyze) {
