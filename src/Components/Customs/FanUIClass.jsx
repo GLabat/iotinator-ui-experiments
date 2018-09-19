@@ -4,7 +4,7 @@ import { observer } from 'mobx-react'
 import { action, observable } from 'mobx'
 
 // Simple component
-// @observer
+@observer
 class SimpleComponent extends React.Component {
   static displayName = 'SimpleComponent'
   static propTypes = {
@@ -18,7 +18,7 @@ class SimpleComponent extends React.Component {
   //   osc: true
   // }
 
-  // @observable
+  @observable
   data = {
     speed: this.props.speed,
     osc: this.props.osc
