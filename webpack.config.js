@@ -29,7 +29,7 @@ module.exports = (env, options) => {
         only: ['react', 'react-dom', 'mobx'], // ## 'mobx-react' is not available yet… See https://github.com/mastilver/module-to-cdn/blob/master/modules.json
         verbose: false // Debug: set it to true to see if cdn is used
       }),
-      new AssetsPlugin()
+      new AssetsPlugin({ useCompilerPath: true })
     )
 
     if (options.analyze) {
