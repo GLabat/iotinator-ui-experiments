@@ -85,7 +85,7 @@ class Module {
   @action
   rename = newName => {
     this.beingEdited = true
-    XIOT_API.rename(this.id, newName, this.name)
+    XIOT_API.rename(this.ip, newName, this.name)
       .then(() => {
         this.beingEdited = false
         // Update the name locally (client-side) only if server call is successful

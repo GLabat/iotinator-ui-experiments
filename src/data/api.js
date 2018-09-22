@@ -5,7 +5,9 @@
  * @param {Object} customData THe data to send
  */
 function updateData(moduleIp, customData) {
-  return new Promise((resolve /*, reject*/) => {
+  return new Promise((resolve, reject) => {
+    // eslint-disable-next-line
+    console.log(`Update custom data of '${moduleIp}' with '${JSON.stringify(customData)}'`)
     // Simulate long-running renaming
     fetch(document.location.origin + '/api/data', {
       credentials: 'include',
@@ -13,21 +15,27 @@ function updateData(moduleIp, customData) {
       body: JSON.stringify(customData),
       method: 'POST'
     })
-    // eslint-disable-next-line
-    console.log(`Update custom data of '${moduleIp}' with '${JSON.stringify(customData)}'`)
-    resolve()
+      .then(postData => {
+        resolve(postData)
+      })
+      .catch(e => reject(e))
   })
-  // TODO: handle failure
 }
 
-function rename(moduleId, newName, oldName) {
-  return new Promise((resolve /*, reject*/) => {
-    // Simulate long-running renaming
-    setTimeout(() => {
-      // eslint-disable-next-line
-      console.log(`Renaming '${moduleId}' from '${oldName}' to '${newName}'`)
-      resolve()
-    }, 2000)
+function rename(moduleIp, newName, oldName) {
+  return new Promise((resolve, reject) => {
+    // eslint-disable-next-line
+    console.log(`Renaming '${moduleIp}' from '${oldName}' to '${newName}'`)
+    fetch(document.location.origin + '/api/rename', {
+      credentials: 'include',
+      headers: { 'Xiot-forward-to': moduleIp },
+      body: `{"name":"${newName}"}`,
+      method: 'POST'
+    })
+      .then(postData => {
+        resolve(postData)
+      })
+      .catch(e => reject(e))
   })
 }
 
