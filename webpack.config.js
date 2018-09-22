@@ -47,7 +47,7 @@ module.exports = (env, options) => {
     devtool: sourcemap,
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: '[name].[hash].js'
+      filename: devMode ? '[name].[hash].js' : '[name].[contenthash].js'
     },
     optimization: {
       minimizer: [
