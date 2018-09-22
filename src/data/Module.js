@@ -75,7 +75,7 @@ class Module {
     // Update the custom data immediatly (UI should reflect the change asap)
     set(this.customData, data)
     // TODO: handle failure
-    XIOT_API.updateData(this.id, data)
+    XIOT_API.updateData(this.ip, data)
       .then(() => {
         this.beingEdited = false
       })
@@ -90,7 +90,7 @@ class Module {
   @action
   rename = newName => {
     this.beingEdited = true
-    XIOT_API.rename(this.id, newName, this.name)
+    XIOT_API.rename(this.ip, newName, this.name)
       .then(() => {
         this.beingEdited = false
         // Update the name locally (client-side) only if server call is successful

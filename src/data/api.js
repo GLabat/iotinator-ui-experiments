@@ -4,40 +4,38 @@
  * @param {String} moduleId Identifier of the module
  * @param {Object} customData THe data to send
  */
-function updateData(moduleId, customData) {
-  // PUT <iotinaot>/api/data {<custom_data>}, headers:{"Xiot-forward-to": model.__ip}
-  // fetch('http://www.iotinator.com/debug.htmlapi/data', {
-  //   credentials: 'include',
-  //   headers: {},
-  //   referrer: 'http://www.iotinator.com/debug.html',
-  //   referrerPolicy: 'no-referrer-when-downgrade',
-  //   body: '{"level":"46","id":"M5c_cf_7f_24_7a_ef"}',
-  //   method: 'PUT',
-  //   mode: 'cors'
-  // })
-
-  return new Promise((resolve /*, reject*/) => {
+function updateData(moduleIp, customData) {
+  return new Promise((resolve, reject) => {
+    // eslint-disable-next-line
+    console.log(`Update custom data of '${moduleIp}' with '${JSON.stringify(customData)}'`)
     // Simulate long-running renaming
-    setTimeout(() => {
-      // eslint-disable-next-line
-      console.log(
-        `Update custom data of '${moduleId}' with '${JSON.stringify(
-          customData
-        )}'`
-      )
-      resolve()
-    }, 2000)
+    fetch(document.location.origin + '/api/data', {
+      credentials: 'include',
+      headers: { 'Xiot-forward-to': moduleIp },
+      body: JSON.stringify(customData),
+      method: 'POST'
+    })
+      .then(postData => {
+        resolve(postData)
+      })
+      .catch(e => reject(e))
   })
 }
 
-function rename(moduleId, newName, oldName) {
-  return new Promise((resolve /*, reject*/) => {
-    // Simulate long-running renaming
-    setTimeout(() => {
-      // eslint-disable-next-line
-      console.log(`Renaming '${moduleId}' from '${oldName}' to '${newName}'`)
-      resolve()
-    }, 2000)
+function rename(moduleIp, newName, oldName) {
+  return new Promise((resolve, reject) => {
+    // eslint-disable-next-line
+    console.log(`Renaming '${moduleIp}' from '${oldName}' to '${newName}'`)
+    fetch(document.location.origin + '/api/rename', {
+      credentials: 'include',
+      headers: { 'Xiot-forward-to': moduleIp },
+      body: `{"name":"${newName}"}`,
+      method: 'POST'
+    })
+      .then(postData => {
+        resolve(postData)
+      })
+      .catch(e => reject(e))
   })
 }
 
