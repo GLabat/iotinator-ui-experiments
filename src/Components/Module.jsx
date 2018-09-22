@@ -4,10 +4,11 @@ import PropTypes from 'prop-types'
 import { action } from 'mobx'
 import { observer } from 'mobx-react'
 
-import Module from '../data/Module'
+import Module from 'data/Module'
 
 import Loadable from 'react-loadable'
 import Loading from './Loading.jsx'
+import LoadingOverlay from './LoadingOverlay.jsx'
 
 import '../styles.css'
 
@@ -153,6 +154,7 @@ const ModuleView = observer(({ module, useArticle }) => {
 
   return (
     <div className="card module">
+      {beingEdited && <LoadingOverlay />}
       <header className="card-header">
         <span className="card-header-title">
           {name} ({id}) {!beingEdited && <ActionBar />}

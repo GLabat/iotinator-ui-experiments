@@ -1,4 +1,4 @@
-import { action, computed, set, observable } from 'mobx'
+import { action, computed, set, observable, toJS } from 'mobx'
 
 import XIOT_API from './api'
 
@@ -70,14 +70,19 @@ class Module {
   @action
   updateCustomData = data => {
     this.beingEdited = true
+    // Shallow copy of existing data
+    const oldCustomData = toJS(this.customData)
+    // Update the custom data immediatly (UI should reflect the change asap)
+    set(this.customData, data)
     // TODO: handle failure
     XIOT_API.updateData(this.ip, data)
       .then(() => {
         this.beingEdited = false
-        set(this.customData, data)
       })
       .catch(e => {
         this.beingEdited = false
+        // Restore previous value in case of error
+        set(this.customData, oldCustomData)
         throw e
       })
   }
