@@ -7,8 +7,6 @@ import ModuleList from '../data/ModuleList'
 
 import ModuleView from './Module'
 
-import '../styles.css'
-
 @observer
 class ModuleListView extends React.Component {
   static propTypes = {

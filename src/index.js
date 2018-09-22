@@ -7,7 +7,7 @@ import ModuleList from './data/ModuleList.js'
 import ModuleListView from './Components/ModuleList.jsx'
 import NewFakeModule from './Components/NewFakeModule.jsx'
 
-//import SAMPLE_DATA from './sample.js'
+import './styles.scss'
 
 const store = new ModuleList()
 

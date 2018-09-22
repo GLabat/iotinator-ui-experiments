@@ -13,3 +13,9 @@ span.card-header-title {
 .module {
   margin: 1.5em 0;
 }
+
+.inlineInput {
+  &:hover {
+    cursor: pointer;
+  }
+}
