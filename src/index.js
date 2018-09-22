@@ -7,17 +7,24 @@ import Module from './data/Module.js'
 import ModuleList from './data/ModuleList.js'
 import ModuleListView from './Components/ModuleList.jsx'
 
-import SAMPLE_DATA from './sample.js'
+//import SAMPLE_DATA from './sample.js'
 
 const store = new ModuleList()
-Object.entries(SAMPLE_DATA).forEach(([k, v]) =>
-  store.modules.push(
-    new Module({
-      MAC: k,
-      ...v
-    })
-  )
-)
+
+fetch(document.location.origin + '/api/list')
+  .then(response => response.json())
+  .then(data => {
+    Object.entries(data.agentList).forEach(([k, v]) =>
+      store.modules.push(
+        new Module({
+          MAC: k,
+          ...v
+        })
+      )
+    )
+    render(<App />, document.getElementById('app'))
+  })
+
 //console.log(store.modules.slice())
 let idx = 2
 const App = observer(() => (
@@ -47,7 +54,6 @@ const App = observer(() => (
   </React.Fragment>
 ))
 
-render(<App />, document.getElementById('app'))
 if (process.env.NODE_ENV === 'development') {
   // DEBUG: expose the store (module list in window to test outside of the UI)
   // Ex: window.store.modules[0].customData.speed = "5"
