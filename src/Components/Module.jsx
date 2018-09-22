@@ -7,10 +7,10 @@ import { observer } from 'mobx-react'
 import Module from 'data/Module'
 
 import Loadable from 'react-loadable'
-import Loading from './Loading.jsx'
-import LoadingOverlay from './LoadingOverlay.jsx'
 
-import '../styles.css'
+import Loading from './Loading.jsx'
+import InlineEdit from './InlineEdit.jsx'
+import LoadingOverlay from './LoadingOverlay.jsx'
 
 // Enforce structure and behaviour of custom component
 function makeCustomComponent(WrappedComponent, module) {
@@ -71,20 +71,7 @@ const ModuleView = observer(({ module }) => {
           <i className={`fas fa-2x fa-toggle-${(disabled && 'off') || 'on'}`} />
         </span>
       </a>
-      <a
-        className={'navbar-item button is-white ' + childClassName}
-        aria-label="rename"
-        onClick={e => {
-          e.preventDefault(e)
-          const newName = prompt('Enter new name', module.name)
-          // Cancelling the prompt set the returned value to null…
-          if (newName !== null && newName !== '') {
-            module.rename(newName)
-          }
-        }}
-      >
-        <i className="fas fa-2x fa-edit" aria-hidden="true" />
-      </a>
+
       <a
         className={'navbar-item button is-white ' + childClassName}
         aria-label="info"
@@ -143,7 +130,17 @@ const ModuleView = observer(({ module }) => {
       {beingEdited && <LoadingOverlay />}
       <header className="card-header">
         <span className="card-header-title">
-          {name} ({id}) {!beingEdited && <ActionBar />}
+          <InlineEdit
+            onChange={newName => {
+              // Cancelling the prompt set the returned value to null…
+              if (newName !== null && newName !== '') {
+                module.rename(newName)
+              }
+            }}
+            value={name}
+          />
+          &nbsp;(
+          {id}) {!beingEdited && <ActionBar />}
           {beingEdited && (
             <span>
               <i className="fas fa-spinner fa-spin" />
