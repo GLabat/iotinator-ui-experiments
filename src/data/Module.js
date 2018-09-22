@@ -47,7 +47,7 @@ class Module {
     ssid,
     ip,
     uiClassName = '',
-    customData = {}
+    custom = {}
   }) {
     if (!MAC) {
       throw new Error('ErrNoMac')
@@ -61,9 +61,9 @@ class Module {
     this.uiClassName = uiClassName
     // Make custom data observable but note that new properties would not be observed
     try {
-      this.customData = observable(JSON.parse(customData))
+      this.customData = observable(JSON.parse(custom))
     } catch (e) {
-      this.customData = {}
+      this.customData = observable({})
     }
   }
 
