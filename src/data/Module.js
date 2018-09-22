@@ -71,7 +71,7 @@ class Module {
   updateCustomData = data => {
     this.beingEdited = true
     // TODO: handle failure
-    XIOT_API.updateData(this.id, data)
+    XIOT_API.updateData(this.ip, data)
       .then(() => {
         this.beingEdited = false
         set(this.customData, data)
