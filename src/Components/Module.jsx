@@ -43,7 +43,7 @@ function makeCustomComponent(WrappedComponent, module) {
   return observer(_CustomComponent)
 }
 
-const ModuleView = observer(({ module, useArticle }) => {
+const ModuleView = observer(({ module }) => {
   const {
     name,
     id,
@@ -57,21 +57,23 @@ const ModuleView = observer(({ module, useArticle }) => {
     beingEdited
   } = module
 
-  const ActionBar = ({ className }) => (
-    <p className={`buttons ${className}`}>
-      <button
-        className={`button is-white`}
+  const ActionBar = ({ className, childClassName }) => (
+    <nav className={'navbar ' + className}>
+      <a
+        className={'navbar-item button is-white ' + childClassName}
+        aria-label="reply"
         onClick={action(e => {
           e.preventDefault(e)
           module.toggle()
         })}
       >
-        <span className="icon">
-          <i className={`fa fa-toggle-${(disabled && 'off') || 'on'}`} />
+        <span className="icon is-white is-small">
+          <i className={`fas fa-2x fa-toggle-${(disabled && 'off') || 'on'}`} />
         </span>
-      </button>
-      <button
-        className="button is-white"
+      </a>
+      <a
+        className={'navbar-item button is-white ' + childClassName}
+        aria-label="rename"
         onClick={e => {
           e.preventDefault(e)
           const newName = prompt('Enter new name', module.name)
@@ -81,53 +83,38 @@ const ModuleView = observer(({ module, useArticle }) => {
           }
         }}
       >
-        <i className="fa fa-edit" aria-hidden="true" />
-      </button>
-    </p>
+        <i className="fas fa-2x fa-edit" aria-hidden="true" />
+      </a>
+      <a
+        className={'navbar-item button is-white ' + childClassName}
+        aria-label="info"
+      >
+        <span className="icon is-small">
+          <i className="fas fa-2x fa-info" aria-hidden="true" />
+        </span>
+      </a>
+    </nav>
   )
 
+  //   <button
+  //     className="button is-white"
+  //     onClick={e => {
+  //       e.preventDefault(e)
+  //       const newName = prompt('Enter new name', module.name)
+  //       // Cancelling the prompt set the returned value to null…
+  //       if (newName !== null && newName !== '') {
+  //         module.rename(newName)
+  //       }
+  //     }}
+  //   >
+  //     <i className="fa fa-edit" aria-hidden="true" />
+  //   </button>
+  // </p>
+  // )
+
   ActionBar.propTypes = {
-    className: PropTypes.string
-  }
-
-  if (useArticle) {
-    return (
-      <article className="media">
-        <figure className="media-left">
-          <p className="image is-64x64">
-            <img
-              src="https://bulma.io/images/placeholders/128x128.png"
-              alt=""
-            />
-          </p>
-        </figure>
-        <div className="media-content">
-          <div className="content">
-            <h3>
-              <strong>{name}</strong> <small>({id})</small>
-            </h3>
-
-            <div>
-              <p>Type: {type}</p>
-              <p>MAC: {MAC}</p>
-              <p>IP: {ip}</p>
-              <p>SSID: {ssid}</p>
-            </div>
-          </div>
-          <nav className="level is-mobile">
-            <div className="level-left">
-              <ActionBar className="level-item" />
-            </div>
-          </nav>
-        </div>
-        <div className="media-right">
-          <span className="icon">
-            <i className={`fa fa-${(disabled && 'times') || 'check'}-circle`} />
-            {disabled ? 'DISABLED' : 'ENABLED'}
-          </span>
-        </div>
-      </article>
-    )
+    className: PropTypes.string,
+    childClassName: PropTypes.string
   }
 
   let CustomComponent = null
@@ -152,8 +139,7 @@ const ModuleView = observer(({ module, useArticle }) => {
     )
   }
 
-  return (
-    <div className="card module">
+  /* <div className="card module">
       {beingEdited && <LoadingOverlay />}
       <header className="card-header">
         <span className="card-header-title">
@@ -186,13 +172,66 @@ const ModuleView = observer(({ module, useArticle }) => {
           </span>
         </span>
       </div>
+    </div> */
+
+  return (
+    <div className="box level module">
+      {beingEdited && <LoadingOverlay />}
+      {/* <div className="media-left">
+          <figure className="image is-128x128">
+            <span className="is-128x128">
+              <i className="fas fa-lightbulb fa-w-11 fa-3x" />
+            </span>
+            <img
+              src="https://bulma.io/images/placeholders/128x128.png"
+              alt="Image"
+            />
+          </figure>
+        </div> */}
+      <div className="level-left">
+        <figure className="image is-48x48">
+          <span>
+            <i className="fas fa-lightbulb fa-3x" />
+          </span>
+        </figure>
+        <p className="level-item">
+          <strong>{name}</strong> <small>({id})</small>{' '}
+        </p>
+        <p className="level-item">
+          {beingEdited && (
+            <span>
+              <i className="fas fa-spinner fa-spin" />
+              Update in progress…
+            </span>
+          )}
+        </p>
+      </div>
+      <div className="level-right">
+        {!beingEdited && (
+          <ActionBar className="level-item" childClassName="level-item" />
+        )}
+        {/* <p class="level-item">
+          <strong>All</strong>
+        </p>
+        <p class="level-item">
+          <a>Published</a>
+        </p>
+        <p class="level-item">
+          <a>Drafts</a>
+        </p>
+        <p class="level-item">
+          <a>Deleted</a>
+        </p>
+        <p class="level-item">
+          <a class="button is-success">New</a>
+        </p> */}
+      </div>
     </div>
   )
 })
 
 ModuleView.propTypes = {
-  module: PropTypes.instanceOf(Module).isRequired,
-  useArticle: PropTypes.bool
+  module: PropTypes.instanceOf(Module).isRequired
 }
 
 export default ModuleView

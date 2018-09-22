@@ -12,15 +12,7 @@ import '../styles.css'
 @observer
 class ModuleListView extends React.Component {
   static propTypes = {
-    moduleList: PropTypes.instanceOf(ModuleList).isRequired,
-    displayMode: PropTypes.oneOf(['default', 'article'])
-  }
-  static defaultProps = {
-    displayMode: 'default'
-  }
-
-  state = {
-    displayMode: 'default'
+    moduleList: PropTypes.instanceOf(ModuleList).isRequired
   }
 
   render() {
@@ -43,31 +35,13 @@ class ModuleListView extends React.Component {
                 >
                   Toggle all off
                 </a>
-                <a
-                  className="button is-small"
-                  onClick={e => {
-                    e.preventDefault()
-                    this.setState({
-                      displayMode:
-                        this.state.displayMode === 'default'
-                          ? 'article'
-                          : 'default'
-                    })
-                  }}
-                >
-                  Change list layout
-                </a>
               </div>
             </div>
           </div>
         </div>
         <div className="modules-list-content">
           {moduleList.modules.map(module => (
-            <ModuleView
-              key={module.id}
-              useArticle={this.state.displayMode === 'article'}
-              module={module}
-            />
+            <ModuleView key={module.id} module={module} />
           ))}
         </div>
       </React.Fragment>
