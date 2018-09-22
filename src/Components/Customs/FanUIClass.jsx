@@ -10,7 +10,7 @@ class SimpleComponent extends React.Component {
   static propTypes = {
     updateCustomData: PropTypes.func,
     speed: PropTypes.number,
-    osc: PropTypes.bool
+    osc: PropTypes.string
   }
   // static defaultProps = {
   //   updateCustomData: () => {},
@@ -43,8 +43,8 @@ class SimpleComponent extends React.Component {
         <input
           type="checkbox"
           className="checkbox"
-          defaultChecked={this.data.osc}
-          onChange={e => this.onChange('osc', e.target.checked)}
+          defaultChecked={this.data.osc === 'on' ? true : false}
+          onChange={e => this.onChange('osc', e.target.checked ? 'on' : 'off')}
         />
         <button className="button" onClick={this.onSave}>
           Save
