@@ -7,15 +7,19 @@ import { observer } from 'mobx-react'
 // and an input (editable) component.
 // TODO: check on mobile, handle ontouch event
 
+const CSS_COMPONENT_CLASS = 'inlineInput'
+
 @observer
 class InlineEdit extends React.Component {
   static propTypes = {
     value: PropTypes.string,
+    className: PropTypes.string,
     onChange: PropTypes.func
   }
 
   static defaultProps = {
     value: '',
+    className: '',
     onChange: () => {}
   }
 
@@ -67,7 +71,7 @@ class InlineEdit extends React.Component {
         <input
           ref={this.inputRef}
           autoFocus
-          className="input"
+          className={`input ${CSS_COMPONENT_CLASS}`}
           type="text"
           defaultValue={this.props.value}
           onBlur={this.validate}
@@ -78,7 +82,7 @@ class InlineEdit extends React.Component {
     return (
       <span
         title="Click to edit"
-        className="inlineInput"
+        className={CSS_COMPONENT_CLASS}
         onClick={this.toggleEdit}
       >
         {this.props.value}

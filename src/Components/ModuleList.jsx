@@ -37,7 +37,7 @@ class ModuleListView extends React.Component {
             </div>
           </div>
         </div>
-        <div className="modules-list-content">
+        <div className="box modules-list-content">
           {moduleList.modules.map(module => (
             <ModuleView key={module.id} module={module} />
           ))}

@@ -11,11 +11,20 @@ span.card-header-title {
 }
 
 .module {
-  margin: 1.5em 0;
-}
+  margin-bottom: 1.5em;
 
-.inlineInput {
+  // TODO
   &:hover {
-    cursor: pointer;
+    box-shadow: 5px 5px 2px 1px rgba(196, 196, 234, 0.2);
+  }
+
+  .inlineInput {
+    &.input {
+      max-width: 200px;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
