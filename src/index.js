@@ -29,9 +29,7 @@ fetch(document.location.origin + '/api/list')
 const App = observer(() => (
   <React.Fragment>
     <NewFakeModule store={store} />
-    <div className="container">
-      <ModuleListView moduleList={store} />
-    </div>
+    <ModuleListView moduleList={store} />
   </React.Fragment>
 ))
 
